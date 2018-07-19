@@ -12,6 +12,7 @@ public class ArrayStorage {
 
     Resume get(String uuid) {
         return null;
+        //pam pam
     }
 
     void delete(String uuid) {
