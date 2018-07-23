@@ -7,7 +7,7 @@ import java.util.Arrays;
 /**
  * Array based storage for Resumes
  */
-public class SortedArrayStorage extends AbstractArrayStorage{
+public class SortedArrayStorage extends AbstractArrayStorage {
     public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
@@ -17,14 +17,13 @@ public class SortedArrayStorage extends AbstractArrayStorage{
         int i;
         if ((i = getIndex(r.getUuid())) >= 0) {
             storage[i] = r;
-        }
-        else {
+        } else {
             System.out.println("Resume not found");
         }
     }
 
     public void save(Resume r) {
-        if (size == storage.length){
+        if (size == storage.length) {
             System.out.println("The array is full");
             return;
         }
@@ -33,20 +32,8 @@ public class SortedArrayStorage extends AbstractArrayStorage{
         if ((i = getIndex(r.getUuid())) < 0) {
             storage[size] = r;
             size++;
-        }
-        else {
+        } else {
             System.out.println("There is already a resume");
-        }
-    }
-
-    public Resume get(String uuid) {
-        int i;
-        if ((i = getIndex(uuid)) >= 0) {
-            return storage[i];
-        }
-        else {
-            System.out.println("Resume not found");
-            return null;
         }
     }
 
@@ -56,8 +43,7 @@ public class SortedArrayStorage extends AbstractArrayStorage{
             storage[i] = storage[size - 1];
             storage[size - 1] = null;
             size--;
-        }
-        else {
+        } else {
             System.out.println("Resume not found");
         }
     }
@@ -66,12 +52,8 @@ public class SortedArrayStorage extends AbstractArrayStorage{
         return Arrays.copyOf(storage, size);
     }
 
-    private int getIndex(String str){
-        for (int i = 0; i < size; i++) {
-            if (storage[i].getUuid().equals(str)) {
-                return i;
-            }
-        }
-        return -1;
+    protected int getIndex(String str) {
+        Resume newResume = new Resume(str);
+        return Arrays.binarySearch(storage, 0, size, newResume);
     }
 }

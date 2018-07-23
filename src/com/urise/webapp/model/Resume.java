@@ -3,10 +3,17 @@ package com.urise.webapp.model;
 /**
  * com.urise.webapp.model.com.urise.webapp.model.Resume class
  */
-public class Resume {
+public class Resume implements Comparable<Resume> {
 
     // Unique identifier
     private String uuid;
+
+    public Resume() {
+    }
+
+    public Resume(String uuid) {
+        this.uuid = uuid;
+    }
 
     @Override
     public String toString() {
@@ -19,6 +26,11 @@ public class Resume {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    @Override
+    public int compareTo(Resume o) {
+        return o.uuid.hashCode() - uuid.hashCode();
     }
 
     @Override
