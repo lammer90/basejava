@@ -8,20 +8,6 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public class ArrayStorage extends AbstractArrayStorage {
-    public void clear() {
-        Arrays.fill(storage, 0, size, null);
-        size = 0;
-    }
-
-    public void update(Resume r) {
-        int i;
-        if ((i = getIndex(r.getUuid())) >= 0) {
-            storage[i] = r;
-        } else {
-            System.out.println("Resume not found");
-        }
-    }
-
     public void save(Resume r) {
         if (size == storage.length) {
             System.out.println("The array is full");
@@ -46,10 +32,6 @@ public class ArrayStorage extends AbstractArrayStorage {
         } else {
             System.out.println("Resume not found");
         }
-    }
-
-    public Resume[] getAll() {
-        return Arrays.copyOf(storage, size);
     }
 
     protected int getIndex(String str) {

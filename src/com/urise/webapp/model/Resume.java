@@ -30,7 +30,7 @@ public class Resume implements Comparable<Resume> {
 
     @Override
     public int compareTo(Resume o) {
-        return o.uuid.hashCode() - uuid.hashCode();
+        return uuid.hashCode() - o.uuid.hashCode();
     }
 
     @Override
