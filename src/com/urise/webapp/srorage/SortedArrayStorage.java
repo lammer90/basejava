@@ -1,12 +1,13 @@
 package com.urise.webapp.srorage;
 
 import com.urise.webapp.model.Resume;
+
 import java.util.Arrays;
 
 /**
  * Array based storage for Resumes
  */
-public class ArrayStorage extends AbstractArrayStorage{
+public class SortedArrayStorage extends AbstractArrayStorage{
     public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
