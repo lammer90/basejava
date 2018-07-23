@@ -8,32 +8,6 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public class ArrayStorage extends AbstractArrayStorage {
-    public void save(Resume r) {
-        if (size == storage.length) {
-            System.out.println("The array is full");
-            return;
-        }
-
-        int i;
-        if ((i = getIndex(r.getUuid())) < 0) {
-            storage[size] = r;
-            size++;
-        } else {
-            System.out.println("There is already a resume");
-        }
-    }
-
-    public void delete(String uuid) {
-        int i;
-        if ((i = getIndex(uuid)) >= 0) {
-            storage[i] = storage[size - 1];
-            storage[size - 1] = null;
-            size--;
-        } else {
-            System.out.println("Resume not found");
-        }
-    }
-
     protected int getIndex(String str) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(str)) {
@@ -41,5 +15,16 @@ public class ArrayStorage extends AbstractArrayStorage {
             }
         }
         return -1;
+    }
+
+    @Override
+    protected void deleteElement(int i) {
+        storage[i] = storage[size - 1];
+        storage[size - 1] = null;
+    }
+
+    @Override
+    protected void insertElement(int i, Resume r) {
+        storage[size] = r;
     }
 }
