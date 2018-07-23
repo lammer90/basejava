@@ -17,7 +17,7 @@ public class ArrayStorage {
 
     public void update(Resume r) {
         int i;
-        if ((i = chekResume(r.getUuid())) >= 0) {
+        if ((i = getIndex(r.getUuid())) >= 0) {
             storage[i] = r;
         }
         else {
@@ -32,7 +32,7 @@ public class ArrayStorage {
         }
 
         int i;
-        if ((i = chekResume(r.getUuid())) < 0) {
+        if ((i = getIndex(r.getUuid())) < 0) {
             storage[size] = r;
             size++;
         }
@@ -43,7 +43,7 @@ public class ArrayStorage {
 
     public Resume get(String uuid) {
         int i;
-        if ((i = chekResume(uuid)) >= 0) {
+        if ((i = getIndex(uuid)) >= 0) {
             return storage[i];
         }
         else {
@@ -54,7 +54,7 @@ public class ArrayStorage {
 
     public void delete(String uuid) {
         int i;
-        if ((i = chekResume(uuid)) >= 0) {
+        if ((i = getIndex(uuid)) >= 0) {
             storage[i] = storage[size - 1];
             storage[size - 1] = null;
             size--;
@@ -72,7 +72,7 @@ public class ArrayStorage {
         return size;
     }
 
-    private int chekResume(String str){
+    private int getIndex(String str){
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(str)) {
                 return i;
