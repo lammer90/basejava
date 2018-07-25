@@ -3,6 +3,8 @@ package com.urise.webapp.srorage;
 import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.function.ToIntFunction;
 
 /**
  * Array based storage for Resumes
@@ -10,7 +12,7 @@ import java.util.Arrays;
 public class SortedArrayStorage extends AbstractArrayStorage {
     public Object getSearchKey(String str) {
         Resume newResume = new Resume(str);
-        return Arrays.binarySearch(storage, 0, size, newResume);
+        return Arrays.binarySearch(storage, 0, size, newResume, (o1, o2) -> o1.getUuid().compareTo(o2.getUuid()));
     }
 
     @Override

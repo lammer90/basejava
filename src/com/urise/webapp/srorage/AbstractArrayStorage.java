@@ -2,7 +2,10 @@ package com.urise.webapp.srorage;
 
 import com.urise.webapp.model.Resume;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public abstract class AbstractArrayStorage extends AbstractStorage {
     protected int size = 0;
@@ -51,8 +54,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size = 0;
     }
 
-    protected Resume[] getAllResume(){
-        return Arrays.copyOf(storage, size);
+    protected List<Resume> getAllResume(){
+        Resume[] resumes = Arrays.copyOf(storage, size);
+        List<Resume> listOfObjects = new ArrayList<>(resumes.length);
+        Collections.addAll(listOfObjects, resumes);
+        return listOfObjects;
     }
 
     public int size() {

@@ -2,6 +2,9 @@ package com.urise.webapp.srorage;
 
 import com.urise.webapp.model.Resume;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MapStorage extends AbstractStorage{
     @Override
     protected boolean updateResume(Object key, Resume r) {
@@ -34,8 +37,8 @@ public class MapStorage extends AbstractStorage{
     }
 
     @Override
-    protected Resume[] getAllResume() {
-        return new Resume[0];
+    protected List<Resume> getAllResume() {
+        return new ArrayList<>();
     }
 
     @Override
