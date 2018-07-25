@@ -63,8 +63,13 @@ public class ListStorage extends AbstractStorage{
         return storage.toArray(new Resume[storage.size()]);
     }
 
+    @Override
+    public int size() {
+        return storage.size();
+    }
+
     protected int getIndex(String uuid) {
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < storage.size(); i++) {
             if (storage.get(i).getUuid().equals(uuid)) {
                 return i;
             }

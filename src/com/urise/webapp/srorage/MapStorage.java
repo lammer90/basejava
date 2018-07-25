@@ -37,4 +37,9 @@ public class MapStorage extends AbstractStorage{
     protected Resume[] getAllResume() {
         return new Resume[0];
     }
+
+    @Override
+    public int size() {
+        return 0;
+    }
 }

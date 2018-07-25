@@ -7,11 +7,9 @@ import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
 
-public abstract class AbstractStorage implements Storage{
-    protected int size = 0;
-
+public abstract class AbstractStorage implements Storage {
     public void update(Resume r) {
-        if (!updateResume(r)){
+        if (!updateResume(r)) {
             throw new NotExistStorageException(r.getUuid());
         }
     }
@@ -29,34 +27,23 @@ public abstract class AbstractStorage implements Storage{
         if (chekSize()) {
             throw new StorageException("The array is full", r.getUuid());
         }
-        if (saveResume(r)) {
-            size++;
-        }
-        else {
+        if (!saveResume(r)) {
             throw new ExistStorageException(r.getUuid());
         }
     }
 
-    public void delete(String uuid){
-        if (deleteResume(uuid)){
-            size--;
-        }
-        else {
+    public void delete(String uuid) {
+        if (!deleteResume(uuid)) {
             throw new NotExistStorageException(uuid);
         }
     }
 
     public void clear() {
         clearAllResume();
-        size = 0;
     }
 
     public Resume[] getAll() {
         return getAllResume();
-    }
-
-    public int size() {
-        return size;
     }
 
 
