@@ -1,72 +1,60 @@
 package com.urise.webapp.srorage;
 
-import com.urise.webapp.exception.ExistStorageException;
-import com.urise.webapp.exception.NotExistStorageException;
-import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 
-import java.io.IOException;
 import java.util.Arrays;
 
-public abstract class AbstractArrayStorage implements Storage {
+public abstract class AbstractArrayStorage extends AbstractStorage {
     private static final int STORAGE_LIMIT = 10000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
-    protected int size = 0;
 
-    public void update(Resume r) {
+    protected boolean updateResume(Resume r){
         int i;
         if ((i = getIndex(r.getUuid())) >= 0) {
-            storage[i] = r;
-        } else {
-            throw new NotExistStorageException(r.getUuid());
+             storage[i] = r;
+             return true;
         }
+        return false;
     }
 
-    public Resume get(String uuid) {
+    protected Resume getResume(String uuid){
         int i;
         if ((i = getIndex(uuid)) >= 0) {
             return storage[i];
-        } else {
-            throw new NotExistStorageException(uuid);
         }
+        return null;
     }
 
-    public void save(Resume r) {
-        if (size == storage.length) {
-            throw new StorageException("The array is full", r.getUuid());
-        }
+    protected boolean chekSize(){
+        return size == storage.length;
+    }
 
+    protected boolean saveResume(Resume r){
         int i;
         if ((i = getIndex(r.getUuid())) < 0) {
             insertElement(i, r);
-            size++;
-        } else {
-            throw new ExistStorageException(r.getUuid());
+            return true;
         }
+        return false;
     }
 
-    public void delete(String uuid){
+    protected boolean deleteResume(String uuid){
         int i;
         if ((i = getIndex(uuid)) >= 0) {
             deleteElement(i);
-            size--;
-        } else {
-            throw new NotExistStorageException(uuid);
+            return true;
         }
+        return false;
     }
 
-    public void clear() {
+    protected void clearAllResume(){
         Arrays.fill(storage, 0, size, null);
-        size = 0;
     }
 
-    public Resume[] getAll() {
+    protected Resume[] getAllResume(){
         return Arrays.copyOf(storage, size);
     }
 
-    public int size() {
-        return size;
-    }
 
     protected abstract void deleteElement(int i);
 
