@@ -52,10 +52,9 @@ public abstract class AbstractStorage implements Storage {
         resumes.sort(new Comparator<Resume>() {
             @Override
             public int compare(Resume o1, Resume o2) {
-                return 0;
+                return o1.getFullname().compareTo(o2.getFullname());
             }
         });
-
         return resumes;
     }
 

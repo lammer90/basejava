@@ -11,7 +11,7 @@ import java.util.function.ToIntFunction;
  */
 public class SortedArrayStorage extends AbstractArrayStorage {
     public Object getSearchKey(String str) {
-        Resume newResume = new Resume(str);
+        Resume newResume = new Resume(str, str);
         return Arrays.binarySearch(storage, 0, size, newResume, (o1, o2) -> o1.getUuid().compareTo(o2.getUuid()));
     }
 
