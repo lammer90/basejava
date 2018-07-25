@@ -8,7 +8,7 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public class SortedArrayStorage extends AbstractArrayStorage {
-    public int getIndex(String str) {
+    public Object getSearchKey(String str) {
         Resume newResume = new Resume(str);
         return Arrays.binarySearch(storage, 0, size, newResume);
     }

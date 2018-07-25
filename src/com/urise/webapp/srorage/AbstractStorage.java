@@ -9,14 +9,16 @@ import java.util.Arrays;
 
 public abstract class AbstractStorage implements Storage {
     public void update(Resume r) {
-        if (!updateResume(r)) {
+        Object key = getSearchKey(r.getUuid());
+        if (!updateResume(key, r)) {
             throw new NotExistStorageException(r.getUuid());
         }
     }
 
     public Resume get(String uuid) {
         Resume resume;
-        if ((resume = getResume(uuid)) != null) {
+        Object key = getSearchKey(uuid);
+        if ((resume = getResume(key)) != null) {
             return resume;
         } else {
             throw new NotExistStorageException(uuid);
@@ -24,16 +26,18 @@ public abstract class AbstractStorage implements Storage {
     }
 
     public void save(Resume r) {
+        Object key = getSearchKey(r.getUuid());
         if (chekSize()) {
             throw new StorageException("The array is full", r.getUuid());
         }
-        if (!saveResume(r)) {
+        if (!saveResume(key, r)) {
             throw new ExistStorageException(r.getUuid());
         }
     }
 
     public void delete(String uuid) {
-        if (!deleteResume(uuid)) {
+        Object key = getSearchKey(uuid);
+        if (!deleteResume(key)) {
             throw new NotExistStorageException(uuid);
         }
     }
@@ -47,17 +51,19 @@ public abstract class AbstractStorage implements Storage {
     }
 
 
-    protected abstract boolean updateResume(Resume r);
+    protected abstract boolean updateResume(Object key, Resume r);
 
-    protected abstract Resume getResume(String uuid);
+    protected abstract Resume getResume(Object key);
 
     protected abstract boolean chekSize();
 
-    protected abstract boolean saveResume(Resume r);
+    protected abstract boolean saveResume(Object key, Resume r);
 
-    protected abstract boolean deleteResume(String uuid);
+    protected abstract boolean deleteResume(Object key);
 
     protected abstract void clearAllResume();
 
     protected abstract Resume[] getAllResume();
+
+    protected abstract Object getSearchKey(String uuid);
 }

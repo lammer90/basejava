@@ -9,19 +9,17 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     private static final int STORAGE_LIMIT = 10000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
 
-    protected boolean updateResume(Resume r){
-        int i;
-        if ((i = getIndex(r.getUuid())) >= 0) {
-             storage[i] = r;
+    protected boolean updateResume(Object key, Resume r){
+        if ((int)key >= 0) {
+             storage[(int)key] = r;
              return true;
         }
         return false;
     }
 
-    protected Resume getResume(String uuid){
-        int i;
-        if ((i = getIndex(uuid)) >= 0) {
-            return storage[i];
+    protected Resume getResume(Object key){
+        if ((int)key >= 0) {
+            return storage[(int)key];
         }
         return null;
     }
@@ -30,20 +28,18 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return size == storage.length;
     }
 
-    protected boolean saveResume(Resume r){
-        int i;
-        if ((i = getIndex(r.getUuid())) < 0) {
-            insertElement(i, r);
+    protected boolean saveResume(Object key, Resume r){
+        if ((int)key < 0) {
+            insertElement((int)key, r);
             size++;
             return true;
         }
         return false;
     }
 
-    protected boolean deleteResume(String uuid){
-        int i;
-        if ((i = getIndex(uuid)) >= 0) {
-            deleteElement(i);
+    protected boolean deleteResume(Object key){
+        if ((int)key >= 0) {
+            deleteElement((int)key);
             size--;
             return true;
         }
@@ -67,6 +63,4 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected abstract void deleteElement(int i);
 
     protected abstract void insertElement(int i, Resume r);
-
-    protected abstract int getIndex(String uuid);
 }

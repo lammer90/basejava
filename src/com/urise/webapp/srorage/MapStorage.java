@@ -4,12 +4,12 @@ import com.urise.webapp.model.Resume;
 
 public class MapStorage extends AbstractStorage{
     @Override
-    protected boolean updateResume(Resume r) {
+    protected boolean updateResume(Object key, Resume r) {
         return false;
     }
 
     @Override
-    protected Resume getResume(String uuid) {
+    protected Resume getResume(Object key) {
         return null;
     }
 
@@ -19,12 +19,12 @@ public class MapStorage extends AbstractStorage{
     }
 
     @Override
-    protected boolean saveResume(Resume r) {
+    protected boolean saveResume(Object key, Resume r) {
         return false;
     }
 
     @Override
-    protected boolean deleteResume(String uuid) {
+    protected boolean deleteResume(Object key) {
         return false;
     }
 
@@ -36,6 +36,11 @@ public class MapStorage extends AbstractStorage{
     @Override
     protected Resume[] getAllResume() {
         return new Resume[0];
+    }
+
+    @Override
+    protected Object getSearchKey(String uuid) {
+        return null;
     }
 
     @Override
