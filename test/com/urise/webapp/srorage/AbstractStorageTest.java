@@ -23,14 +23,14 @@ public abstract class AbstractStorageTest {
     @Before
     public void reset() {
         storage.clear();
-        storage.save(new Resume(UUID_1, UUID_1));
-        storage.save(new Resume(UUID_2, UUID_2));
-        storage.save(new Resume(UUID_3, UUID_3));
+        storage.save(new Resume("Name 1", UUID_1));
+        storage.save(new Resume("Name 2", UUID_2));
+        storage.save(new Resume("Name 3", UUID_3));
     }
 
     @Test
     public void update() throws Exception {
-        Resume r = new Resume(UUID_1, UUID_1);
+        Resume r = new Resume("New name", UUID_1);
         storage.update(r);
         assertTrue(storage.get(UUID_1) == r);
     }
@@ -44,7 +44,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void save() throws Exception {
-        Resume r = new Resume("uuid4", "uuid4");
+        Resume r = new Resume("Name 4", "uuid4");
         storage.save(r);
         Assert.assertEquals(4, storage.size());
         Assert.assertEquals(storage.get("uuid4"), r);
