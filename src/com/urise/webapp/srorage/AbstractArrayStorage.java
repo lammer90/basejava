@@ -7,21 +7,21 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class AbstractArrayStorage extends AbstractStorage {
+public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     protected int size = 0;
     private static final int STORAGE_LIMIT = 10000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
 
-    protected boolean updateResume(Object key, Resume r){
-        if ((int)key >= 0) {
+    protected boolean updateResume(Integer key, Resume r){
+        if (key >= 0) {
              storage[(int)key] = r;
              return true;
         }
         return false;
     }
 
-    protected Resume getResume(Object key){
-        if ((int)key >= 0) {
+    protected Resume getResume(Integer key){
+        if (key >= 0) {
             return storage[(int)key];
         }
         return null;
@@ -31,8 +31,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return size == storage.length;
     }
 
-    protected boolean saveResume(Object key, Resume r){
-        if ((int)key < 0) {
+    protected boolean saveResume(Integer key, Resume r){
+        if (key < 0) {
             insertElement((int)key, r);
             size++;
             return true;
@@ -40,8 +40,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return false;
     }
 
-    protected boolean deleteResume(Object key){
-        if ((int)key >= 0) {
+    protected boolean deleteResume(Integer key){
+        if (key >= 0) {
             deleteElement((int)key);
             size--;
             return true;

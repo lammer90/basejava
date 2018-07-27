@@ -1,5 +1,11 @@
 package com.urise.webapp.model;
 
+import com.urise.webapp.model.section.Section;
+import com.urise.webapp.model.section.SectionType;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -10,20 +16,43 @@ public class Resume {
     // Unique identifier
     private String uuid;
     private String fullname;
+    private Map<Contacts, String> contacts = new HashMap<>();
+    private Map<SectionType, Section> sections = new HashMap<>();
 
     public Resume(String fullName, String uuid) {
         this.fullname = fullName;
         this.uuid = uuid;
+        //initializeFields();
     }
 
-    public Resume(String fullName) {
+    public Resume(String fullName){
         this.fullname = fullName;
         this.uuid = UUID.randomUUID().toString();
+        //initializeFields();
+    }
+
+    private void initializeFields(){
+        for (Contacts contact : Contacts.values()){
+            contacts.put(contact, "");
+        }
+
+        for (SectionType sectionType : SectionType.values()){
+            try {
+                Section section = (Section) sectionType.getaClass().newInstance();
+                sections.put(sectionType, section);
+            }
+            catch (Exception e){}
+        }
     }
 
     @Override
     public String toString() {
-        return fullname + " " + super.toString();
+        return "Resume{" +
+                "uuid='" + uuid + '\'' +
+                ", fullname='" + fullname + '\'' +
+                ", contacts=" + contacts +
+                ", sections=" + sections +
+                '}';
     }
 
     public String getUuid() {
@@ -38,11 +67,6 @@ public class Resume {
         this.fullname = fullname;
     }
 
-    //@Override
-    //public int compareTo(Resume o) {
-    //    return uuid.hashCode() - o.uuid.hashCode();
-    //}
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -56,5 +80,13 @@ public class Resume {
     @Override
     public int hashCode() {
         return uuid != null ? uuid.hashCode() : 0;
+    }
+
+    public Map<Contacts, String> getContacts() {
+        return contacts;
+    }
+
+    public Map<SectionType, Section> getSections() {
+        return sections;
     }
 }

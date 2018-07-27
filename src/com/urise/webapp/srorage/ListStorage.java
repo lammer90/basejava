@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ListStorage extends AbstractStorage{
+public class ListStorage extends AbstractStorage<Integer>{
     protected List<Resume> storage = new ArrayList<>();
 
     @Override
-    protected boolean updateResume(Object key, Resume r) {
-        if ((int)key >= 0) {
+    protected boolean updateResume(Integer key, Resume r) {
+        if (key >= 0) {
             storage.set((int)key, r);
             return true;
         }
@@ -19,8 +19,8 @@ public class ListStorage extends AbstractStorage{
     }
 
     @Override
-    protected Resume getResume(Object key) {
-        if ((int)key >= 0) {
+    protected Resume getResume(Integer key) {
+        if (key >= 0) {
             return storage.get((int)key);
         }
         return null;
@@ -32,8 +32,8 @@ public class ListStorage extends AbstractStorage{
     }
 
     @Override
-    protected boolean saveResume(Object key, Resume r) {
-        if ((int)key < 0) {
+    protected boolean saveResume(Integer key, Resume r) {
+        if (key < 0) {
             storage.add(r);
             return true;
         }
@@ -41,8 +41,8 @@ public class ListStorage extends AbstractStorage{
     }
 
     @Override
-    protected boolean deleteResume(Object key) {
-        if ((int)key >= 0) {
+    protected boolean deleteResume(Integer key) {
+        if (key >= 0) {
             storage.remove((int)key);
             return true;
         }
@@ -65,7 +65,7 @@ public class ListStorage extends AbstractStorage{
     }
 
     @Override
-    protected Object getSearchKey(String uuid) {
+    protected Integer getSearchKey(String uuid) {
         for (int i = 0; i < storage.size(); i++) {
             if (storage.get(i).getUuid().equals(uuid)) {
                 return i;
