@@ -3,13 +3,15 @@ package com.urise.webapp.model.section;
 import java.util.Date;
 
 public class Conteiner {
-    private Date date1, date2;
+    private String homePage;
+    private Date startDate, endDate;
     private String title;
-    private  String text;
+    private String text;
 
-    public Conteiner(Date date1, Date date2, String title, String text) {
-        this.date1 = date1;
-        this.date2 = date2;
+    public Conteiner(String homePage, Date startDate, Date endDate, String title, String text) {
+        this.homePage = homePage;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.title = title;
         this.text = text;
     }
@@ -17,8 +19,9 @@ public class Conteiner {
     @Override
     public String toString() {
         return "Conteiner{" +
-                "date1=" + date1 +
-                ", date2=" + date2 +
+                "homePage='" + homePage + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
                 ", title='" + title + '\'' +
                 ", text='" + text + '\'' +
                 '}';
@@ -31,27 +34,33 @@ public class Conteiner {
 
         Conteiner conteiner = (Conteiner) o;
 
-        if (date1 != null ? !date1.equals(conteiner.date1) : conteiner.date1 != null) return false;
-        if (date2 != null ? !date2.equals(conteiner.date2) : conteiner.date2 != null) return false;
-        if (title != null ? !title.equals(conteiner.title) : conteiner.title != null) return false;
-        return text != null ? text.equals(conteiner.text) : conteiner.text == null;
+        if (!homePage.equals(conteiner.homePage)) return false;
+        if (!startDate.equals(conteiner.startDate)) return false;
+        if (!endDate.equals(conteiner.endDate)) return false;
+        if (!title.equals(conteiner.title)) return false;
+        return text.equals(conteiner.text);
     }
 
     @Override
     public int hashCode() {
-        int result = date1 != null ? date1.hashCode() : 0;
-        result = 31 * result + (date2 != null ? date2.hashCode() : 0);
-        result = 31 * result + (title != null ? title.hashCode() : 0);
-        result = 31 * result + (text != null ? text.hashCode() : 0);
+        int result = homePage.hashCode();
+        result = 31 * result + startDate.hashCode();
+        result = 31 * result + endDate.hashCode();
+        result = 31 * result + title.hashCode();
+        result = 31 * result + text.hashCode();
         return result;
     }
 
-    public Date getDate1() {
-        return date1;
+    public String getHomePage() {
+        return homePage;
     }
 
-    public Date getDate2() {
-        return date2;
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
     }
 
     public String getTitle() {
@@ -62,12 +71,16 @@ public class Conteiner {
         return text;
     }
 
-    public void setDate1(Date date1) {
-        this.date1 = date1;
+    public void setHomePage(String homePage) {
+        this.homePage = homePage;
     }
 
-    public void setDate2(Date date2) {
-        this.date2 = date2;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     public void setTitle(String title) {
