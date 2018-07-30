@@ -1,14 +1,15 @@
 package com.urise.webapp.model.section;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Conteiner {
     private String homePage;
-    private Date startDate, endDate;
+    private LocalDate startDate, endDate;
     private String title;
     private String text;
 
-    public Conteiner(String homePage, Date startDate, Date endDate, String title, String text) {
+    public Conteiner(String homePage, LocalDate startDate, LocalDate endDate, String title, String text) {
         this.homePage = homePage;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -55,11 +56,11 @@ public class Conteiner {
         return homePage;
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
@@ -75,11 +76,11 @@ public class Conteiner {
         this.homePage = homePage;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
