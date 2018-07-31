@@ -2,10 +2,18 @@ package com.urise.webapp.srorage;
 
 import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
+import com.urise.webapp.model.Contacts;
 import com.urise.webapp.model.Resume;
+import com.urise.webapp.model.section.*;
+import com.urise.webapp.model.util.DateUtil;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.time.Month;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -21,11 +29,48 @@ public abstract class AbstractStorageTest {
     }
 
     @Before
-    public void reset() {
+    public void reset() throws Exception{
         storage.clear();
-        storage.save(new Resume("Name 1", UUID_1));
-        storage.save(new Resume("Name 2", UUID_2));
-        storage.save(new Resume("Name 3", UUID_3));
+        storage.save(newResume("Name 1", UUID_1));
+        storage.save(newResume("Name 2", UUID_2));
+        storage.save(newResume("Name 3", UUID_3));
+    }
+
+    public Resume newResume(String str, String uuid) throws Exception {
+        Resume resume = new Resume("Name " + str, uuid);
+        Map<Contacts, String> contacts = resume.getContacts();
+        Map<SectionType, Section> sections = resume.getSections();
+
+        for (SectionType type : SectionType.values()){
+            if (type.getaClass() == StringSection.class) {
+                sections.put(type, new StringSection(str));
+            }
+            else if (type.getaClass() == ArraySection.class) {
+                List<String> strings = new ArrayList<>();
+                strings.add(str + "*1");
+                strings.add(str + "*2");
+                strings.add(str + "*3");
+
+                sections.put(type, new ArraySection(strings));
+            }
+            else {
+                List<Conteiner> conteiners = new ArrayList<>();
+                List<Conteiner.Period> periods = new ArrayList<>();
+                periods.add(new Conteiner.Period(DateUtil.of(2016, Month.APRIL), DateUtil.of(2017, Month.APRIL)));
+                conteiners.add(new Conteiner("http// " + str, periods, str + "*t" ,str + "*p"));
+
+                List<Conteiner.Period> periods2 = new ArrayList<>();
+                periods2.add(new Conteiner.Period(DateUtil.of(2015, Month.APRIL), DateUtil.of(2016, Month.APRIL)));
+                conteiners.add(new Conteiner("http// " + str, periods2, str + "*m" ,str + "*z"));
+
+                sections.put(type, new ConteinerSection(conteiners));
+            }
+        }
+        for (Contacts contact : Contacts.values()){
+            contacts.put(contact,contact.getTitle() + " " + str);
+        }
+        System.out.println(resume);
+        return resume;
     }
 
     @Test

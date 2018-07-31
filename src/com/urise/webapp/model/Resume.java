@@ -89,4 +89,12 @@ public class Resume {
     public Map<SectionType, Section> getSections() {
         return sections;
     }
+
+    public void setContacts(Map<Contacts, String> contacts) {
+        this.contacts = contacts;
+    }
+
+    public void setSections(Map<SectionType, Section> sections) {
+        this.sections = sections;
+    }
 }

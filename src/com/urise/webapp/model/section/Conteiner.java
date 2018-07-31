@@ -1,18 +1,19 @@
 package com.urise.webapp.model.section;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Conteiner {
     private String homePage;
-    private LocalDate startDate, endDate;
+    private List<Period> periods;
     private String title;
     private String text;
 
-    public Conteiner(String homePage, LocalDate startDate, LocalDate endDate, String title, String text) {
+    public Conteiner(String homePage, List<Period> periods, String title, String text) {
         this.homePage = homePage;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.periods = periods;
         this.title = title;
         this.text = text;
     }
@@ -21,8 +22,7 @@ public class Conteiner {
     public String toString() {
         return "Conteiner{" +
                 "homePage='" + homePage + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
+                ", periods=" + periods +
                 ", title='" + title + '\'' +
                 ", text='" + text + '\'' +
                 '}';
@@ -35,33 +35,23 @@ public class Conteiner {
 
         Conteiner conteiner = (Conteiner) o;
 
-        if (!homePage.equals(conteiner.homePage)) return false;
-        if (!startDate.equals(conteiner.startDate)) return false;
-        if (!endDate.equals(conteiner.endDate)) return false;
-        if (!title.equals(conteiner.title)) return false;
-        return text.equals(conteiner.text);
+        if (homePage != null ? !homePage.equals(conteiner.homePage) : conteiner.homePage != null) return false;
+        if (periods != null ? !periods.equals(conteiner.periods) : conteiner.periods != null) return false;
+        if (title != null ? !title.equals(conteiner.title) : conteiner.title != null) return false;
+        return text != null ? text.equals(conteiner.text) : conteiner.text == null;
     }
 
     @Override
     public int hashCode() {
-        int result = homePage.hashCode();
-        result = 31 * result + startDate.hashCode();
-        result = 31 * result + endDate.hashCode();
-        result = 31 * result + title.hashCode();
-        result = 31 * result + text.hashCode();
+        int result = homePage != null ? homePage.hashCode() : 0;
+        result = 31 * result + (periods != null ? periods.hashCode() : 0);
+        result = 31 * result + (title != null ? title.hashCode() : 0);
+        result = 31 * result + (text != null ? text.hashCode() : 0);
         return result;
     }
 
     public String getHomePage() {
         return homePage;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
     }
 
     public String getTitle() {
@@ -76,19 +66,28 @@ public class Conteiner {
         this.homePage = homePage;
     }
 
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
     public void setTitle(String title) {
         this.title = title;
     }
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public List<Period> getPeriods() {
+        return periods;
+    }
+
+    public void setPeriods(List<Period> periods) {
+        this.periods = periods;
+    }
+
+    public static class Period{
+        private LocalDate startDate, endDate;
+
+        public Period(LocalDate startDate, LocalDate endDate) {
+            this.startDate = startDate;
+            this.endDate = endDate;
+        }
     }
 }

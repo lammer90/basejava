@@ -12,7 +12,7 @@ public class ListStorage extends AbstractStorage<Integer>{
     @Override
     protected boolean updateResume(Integer key, Resume r) {
         if (key >= 0) {
-            storage.set((int)key, r);
+            storage.set(key, r);
             return true;
         }
         return false;
@@ -21,7 +21,7 @@ public class ListStorage extends AbstractStorage<Integer>{
     @Override
     protected Resume getResume(Integer key) {
         if (key >= 0) {
-            return storage.get((int)key);
+            return storage.get(key);
         }
         return null;
     }
