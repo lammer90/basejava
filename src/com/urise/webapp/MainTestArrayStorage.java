@@ -1,16 +1,15 @@
 package com.urise.webapp;
 
 import com.urise.webapp.model.Resume;
-import com.urise.webapp.srorage.ArrayStorage;
-import com.urise.webapp.srorage.ListStorage;
-import com.urise.webapp.srorage.SortedArrayStorage;
-import com.urise.webapp.srorage.Storage;
+import com.urise.webapp.srorage.*;
+
+import java.io.File;
 
 /**
  * Test for com.urise.webapp.storage.com.urise.webapp.srorage.ArrayStorage
  */
 public class MainTestArrayStorage {
-    static final Storage ARRAY_STORAGE = new ListStorage();
+    static final Storage ARRAY_STORAGE = new ObjectStreamStorage(new File("C:\\git_tutorial\\work\\hello\\basejava\\storage"));
 
     public static void main(String[] args) {
         Resume r1 = new Resume("uuid1", "uuid1");

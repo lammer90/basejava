@@ -3,21 +3,20 @@ package com.urise.webapp.model;
 import com.urise.webapp.model.section.Section;
 import com.urise.webapp.model.section.SectionType;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * com.urise.webapp.model.com.urise.webapp.model.Resume class
  */
-public class Resume {
+public class Resume implements Serializable{
+    private static final long serialVersionUID = 1L;
 
     // Unique identifier
     private String uuid;
     private String fullname;
-    private Map<Contacts, String> contacts = new HashMap<>();
-    private Map<SectionType, Section> sections = new HashMap<>();
+    private Map<Contacts, String> contacts = new EnumMap<>(Contacts.class);
+    private Map<SectionType, Section> sections = new EnumMap<>(SectionType.class);
 
     public Resume(String fullName, String uuid) {
         this.fullname = fullName;
@@ -82,19 +81,19 @@ public class Resume {
         return uuid != null ? uuid.hashCode() : 0;
     }
 
-    public Map<Contacts, String> getContacts() {
-        return contacts;
+    public String getContact(Contacts contact) {
+        return contacts.get(contact);
     }
 
-    public Map<SectionType, Section> getSections() {
-        return sections;
+    public Section getSection(SectionType sectionType) {
+        return sections.get(sectionType);
     }
 
-    public void setContacts(Map<Contacts, String> contacts) {
-        this.contacts = contacts;
+    public void addContact(Contacts contact, String text) {
+        contacts.put(contact, text);
     }
 
-    public void setSections(Map<SectionType, Section> sections) {
-        this.sections = sections;
+    public void addSectionn(SectionType sectionType, Section section) {
+        sections.put(sectionType, section);
     }
 }

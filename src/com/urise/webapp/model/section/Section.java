@@ -1,6 +1,8 @@
 package com.urise.webapp.model.section;
 
-public abstract class Section<T> {
+import java.io.Serializable;
+
+public abstract class Section<T> implements Serializable{
     public abstract String toString();
 
     public abstract T getInformation();

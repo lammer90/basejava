@@ -1,16 +1,19 @@
 package com.urise.webapp.model.section;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ConteinerSection extends Section<List<Conteiner>>{
+    private static final long serialVersionUID = 1L;
+
     List<Conteiner> conteiners = new ArrayList<>();
 
     public ConteinerSection(){
     }
 
-    public ConteinerSection(List<Conteiner> conteiners) {
-        this.conteiners = conteiners;
+    public ConteinerSection(Conteiner... conteiners) {
+        this.conteiners = Arrays.asList(conteiners);
     }
 
     @Override

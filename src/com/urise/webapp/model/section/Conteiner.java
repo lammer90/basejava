@@ -1,30 +1,30 @@
 package com.urise.webapp.model.section;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-public class Conteiner {
-    private String homePage;
-    private List<Period> periods;
-    private String title;
-    private String text;
+public class Conteiner implements Serializable{
+    private static final long serialVersionUID = 1L;
 
-    public Conteiner(String homePage, List<Period> periods, String title, String text) {
+    private String homePage, name;
+    private List<Period> periods;
+
+    public Conteiner(String homePage, String name, Period...periods) {
         this.homePage = homePage;
-        this.periods = periods;
-        this.title = title;
-        this.text = text;
+        this.name = name;
+        this.periods = Arrays.asList(periods);
     }
 
     @Override
     public String toString() {
         return "Conteiner{" +
                 "homePage='" + homePage + '\'' +
+                ", name='" + name + '\'' +
                 ", periods=" + periods +
-                ", title='" + title + '\'' +
-                ", text='" + text + '\'' +
                 '}';
     }
 
@@ -36,17 +36,15 @@ public class Conteiner {
         Conteiner conteiner = (Conteiner) o;
 
         if (homePage != null ? !homePage.equals(conteiner.homePage) : conteiner.homePage != null) return false;
-        if (periods != null ? !periods.equals(conteiner.periods) : conteiner.periods != null) return false;
-        if (title != null ? !title.equals(conteiner.title) : conteiner.title != null) return false;
-        return text != null ? text.equals(conteiner.text) : conteiner.text == null;
+        if (name != null ? !name.equals(conteiner.name) : conteiner.name != null) return false;
+        return periods != null ? periods.equals(conteiner.periods) : conteiner.periods == null;
     }
 
     @Override
     public int hashCode() {
         int result = homePage != null ? homePage.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (periods != null ? periods.hashCode() : 0);
-        result = 31 * result + (title != null ? title.hashCode() : 0);
-        result = 31 * result + (text != null ? text.hashCode() : 0);
         return result;
     }
 
@@ -54,24 +52,8 @@ public class Conteiner {
         return homePage;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public String getText() {
-        return text;
-    }
-
     public void setHomePage(String homePage) {
         this.homePage = homePage;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setText(String text) {
-        this.text = text;
     }
 
     public List<Period> getPeriods() {
@@ -82,12 +64,26 @@ public class Conteiner {
         this.periods = periods;
     }
 
-    public static class Period{
+    public static class Period implements Serializable{
         private LocalDate startDate, endDate;
+        private String title;
+        private String text;
 
-        public Period(LocalDate startDate, LocalDate endDate) {
+        public Period(LocalDate startDate, LocalDate endDate, String title, String text) {
             this.startDate = startDate;
             this.endDate = endDate;
+            this.title = title;
+            this.text = text;
+        }
+
+        @Override
+        public String toString() {
+            return "Period{" +
+                    "startDate=" + startDate +
+                    ", endDate=" + endDate +
+                    ", title='" + title + '\'' +
+                    ", text='" + text + '\'' +
+                    '}';
         }
     }
 }

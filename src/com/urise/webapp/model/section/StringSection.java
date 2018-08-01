@@ -3,6 +3,8 @@ package com.urise.webapp.model.section;
 import com.urise.webapp.model.section.Section;
 
 public class StringSection extends Section<String> {
+    private static final long serialVersionUID = 1L;
+
     private String text = "";
 
     public StringSection() {

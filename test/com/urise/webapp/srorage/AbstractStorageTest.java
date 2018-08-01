@@ -10,6 +10,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +22,8 @@ import java.util.Map;
 import static org.junit.Assert.*;
 
 public abstract class AbstractStorageTest {
+    protected static final File file = new File("C:\\git_tutorial\\work\\hello\\basejava\\storage");
+
     protected Storage storage;
 
     protected static final String UUID_1 = "uuid1";
@@ -38,38 +44,28 @@ public abstract class AbstractStorageTest {
 
     public Resume newResume(String str, String uuid) throws Exception {
         Resume resume = new Resume("Name " + str, uuid);
-        Map<Contacts, String> contacts = resume.getContacts();
-        Map<SectionType, Section> sections = resume.getSections();
 
         for (SectionType type : SectionType.values()){
             if (type.getaClass() == StringSection.class) {
-                sections.put(type, new StringSection(str));
+                resume.addSectionn(type, new StringSection(str));
             }
             else if (type.getaClass() == ArraySection.class) {
-                List<String> strings = new ArrayList<>();
-                strings.add(str + "*1");
-                strings.add(str + "*2");
-                strings.add(str + "*3");
-
-                sections.put(type, new ArraySection(strings));
+                resume.addSectionn(type, new ArraySection(str + "*1", str + "*2", str + "*3"));
             }
             else {
-                List<Conteiner> conteiners = new ArrayList<>();
-                List<Conteiner.Period> periods = new ArrayList<>();
-                periods.add(new Conteiner.Period(DateUtil.of(2016, Month.APRIL), DateUtil.of(2017, Month.APRIL)));
-                conteiners.add(new Conteiner("http// " + str, periods, str + "*t" ,str + "*p"));
-
-                List<Conteiner.Period> periods2 = new ArrayList<>();
-                periods2.add(new Conteiner.Period(DateUtil.of(2015, Month.APRIL), DateUtil.of(2016, Month.APRIL)));
-                conteiners.add(new Conteiner("http// " + str, periods2, str + "*m" ,str + "*z"));
-
-                sections.put(type, new ConteinerSection(conteiners));
+                resume.addSectionn(type, new ConteinerSection(
+                        new Conteiner("http// " + str, str + "*name",
+                                new Conteiner.Period(DateUtil.of(2015, Month.APRIL), DateUtil.of(2016, Month.APRIL), str + "*title1",str + "*text1"),
+                                new Conteiner.Period(DateUtil.of(2016, Month.APRIL), DateUtil.of(2017, Month.APRIL), str + "*title2",str + "*text2")),
+                        new Conteiner("http// " + str, str + "*name2",
+                                new Conteiner.Period(DateUtil.of(2015, Month.AUGUST), DateUtil.of(2016, Month.AUGUST), str + "*title4",str + "*text7"),
+                                new Conteiner.Period(DateUtil.of(2016, Month.AUGUST), DateUtil.of(2017, Month.AUGUST), str + "*title5",str + "*text8")
+                )));
             }
         }
         for (Contacts contact : Contacts.values()){
-            contacts.put(contact,contact.getTitle() + " " + str);
+            resume.addContact(contact,contact.getTitle() + " " + str);
         }
-        System.out.println(resume);
         return resume;
     }
 
@@ -77,7 +73,7 @@ public abstract class AbstractStorageTest {
     public void update() throws Exception {
         Resume r = new Resume("New name", UUID_1);
         storage.update(r);
-        assertTrue(storage.get(UUID_1) == r);
+        assertTrue(storage.get(UUID_1).equals(r));
     }
 
     @Test

@@ -3,16 +3,19 @@ package com.urise.webapp.model.section;
 import com.urise.webapp.model.section.Section;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class ArraySection extends Section<List<String>> {
+public class ArraySection extends Section<List<String>>{
+    private static final long serialVersionUID = 1L;
+
     private List<String> strings = new ArrayList<>();
 
     public ArraySection() {
     }
 
-    public ArraySection(List<String> strings) {
-        this.strings = strings;
+    public ArraySection(String... strings) {
+        this.strings = Arrays.asList(strings);
     }
 
     @Override
