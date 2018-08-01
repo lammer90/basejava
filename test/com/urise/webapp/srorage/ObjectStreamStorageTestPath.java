@@ -1,9 +1,9 @@
 package com.urise.webapp.srorage;
 
-import static org.junit.Assert.*;
+import com.urise.webapp.srorage.strategy.ObjectStreamStorage;
 
 public class ObjectStreamStorageTestPath extends AbstractStorageTest{
     public ObjectStreamStorageTestPath() {
-        super(new ObjectStreamStorage(file, 0));
+        super(new PathStorage(file, new ObjectStreamStorage()));
     }
 }
