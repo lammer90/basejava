@@ -22,7 +22,7 @@ import java.util.Map;
 import static org.junit.Assert.*;
 
 public abstract class AbstractStorageTest {
-    protected static final File file = new File("C:\\git_tutorial\\work\\hello\\basejava\\storage");
+    protected static final String file = "C:\\git_tutorial\\work\\hello\\basejava\\storage";
 
     protected Storage storage;
 

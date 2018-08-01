@@ -6,10 +6,10 @@ import com.urise.webapp.model.Resume;
 import java.io.*;
 import java.util.*;
 
-public abstract class AbstractFileStorage extends AbstractStorage<File> implements FileOrPathStrategy{
+public abstract class AbstractFileStorage extends AbstractStorage<File>{
     protected File directory;
 
-    protected AbstractFileStorage(String dir) {
+    public AbstractFileStorage(String dir) {
         directory = new File(dir);
         Objects.requireNonNull(directory, "directory must not be null");
         if (!directory.isDirectory()) {
