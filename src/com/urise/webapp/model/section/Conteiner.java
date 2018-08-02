@@ -1,6 +1,7 @@
 package com.urise.webapp.model.section;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.urise.webapp.util.LocalDateMarshaller;
 
@@ -20,6 +21,7 @@ public class Conteiner implements Serializable{
 
     private String homePage, name;
     @JsonDeserialize(as=ArrayList.class, contentAs = Period.class)
+    @JsonProperty("periods")
     private List<Period> periods;
 
     public Conteiner() {
@@ -80,10 +82,14 @@ public class Conteiner implements Serializable{
     @JsonAutoDetect
     public static class Period implements Serializable{
         @XmlJavaTypeAdapter(LocalDateMarshaller.class)
+        @JsonProperty("startDate")
         private LocalDate startDate;
         @XmlJavaTypeAdapter(LocalDateMarshaller.class)
+        @JsonProperty("endDate")
         private LocalDate endDate;
+        @JsonProperty("title")
         private String title;
+        @JsonProperty("text")
         private String text;
 
         public Period() {

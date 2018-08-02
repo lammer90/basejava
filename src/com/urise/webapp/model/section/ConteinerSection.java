@@ -1,5 +1,6 @@
 package com.urise.webapp.model.section;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -13,6 +14,7 @@ public class ConteinerSection extends Section<List<Conteiner>>{
     private static final long serialVersionUID = 1L;
 
     @JsonDeserialize(as=ArrayList.class, contentAs = Conteiner.class)
+    @JsonProperty("conteiners")
     List<Conteiner> conteiners = new ArrayList<>();
 
     public ConteinerSection(){

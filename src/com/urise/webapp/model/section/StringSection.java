@@ -1,5 +1,7 @@
 package com.urise.webapp.model.section;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
@@ -7,6 +9,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 public class StringSection extends Section<String> {
     private static final long serialVersionUID = 1L;
 
+    @JsonProperty("text")
     private String text = "";
 
     public StringSection() {
