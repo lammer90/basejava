@@ -1,5 +1,7 @@
 package com.urise.webapp.model;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.urise.webapp.model.section.Section;
 import com.urise.webapp.model.section.SectionType;
 
@@ -14,13 +16,16 @@ import java.util.*;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
+@JsonAutoDetect
 public class Resume implements Serializable{
     private static final long serialVersionUID = 1L;
 
     // Unique identifier
     private String uuid;
     private String fullname;
+    @JsonDeserialize(as=EnumMap.class, keyAs = Contacts.class, contentAs = String.class)
     private Map<Contacts, String> contacts = new EnumMap<>(Contacts.class);
+    @JsonDeserialize(as=EnumMap.class, keyAs = SectionType.class, contentAs = Section.class)
     private Map<SectionType, Section> sections = new EnumMap<>(SectionType.class);
 
     public Resume() {

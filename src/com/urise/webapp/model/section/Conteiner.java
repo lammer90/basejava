@@ -1,5 +1,7 @@
 package com.urise.webapp.model.section;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.urise.webapp.util.LocalDateMarshaller;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -17,6 +19,7 @@ public class Conteiner implements Serializable{
     private static final long serialVersionUID = 1L;
 
     private String homePage, name;
+    @JsonDeserialize(as=ArrayList.class, contentAs = Period.class)
     private List<Period> periods;
 
     public Conteiner() {
@@ -74,6 +77,7 @@ public class Conteiner implements Serializable{
     }
 
     @XmlAccessorType(XmlAccessType.FIELD)
+    @JsonAutoDetect
     public static class Period implements Serializable{
         @XmlJavaTypeAdapter(LocalDateMarshaller.class)
         private LocalDate startDate;
@@ -100,6 +104,28 @@ public class Conteiner implements Serializable{
                     ", title='" + title + '\'' +
                     ", text='" + text + '\'' +
                     '}';
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof Period)) return false;
+
+            Period period = (Period) o;
+
+            if (startDate != null ? !startDate.equals(period.startDate) : period.startDate != null) return false;
+            if (endDate != null ? !endDate.equals(period.endDate) : period.endDate != null) return false;
+            if (title != null ? !title.equals(period.title) : period.title != null) return false;
+            return text != null ? text.equals(period.text) : period.text == null;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = startDate != null ? startDate.hashCode() : 0;
+            result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
+            result = 31 * result + (title != null ? title.hashCode() : 0);
+            result = 31 * result + (text != null ? text.hashCode() : 0);
+            return result;
         }
     }
 }

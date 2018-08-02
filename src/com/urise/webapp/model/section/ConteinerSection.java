@@ -1,5 +1,7 @@
 package com.urise.webapp.model.section;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.ArrayList;
@@ -10,6 +12,7 @@ import java.util.List;
 public class ConteinerSection extends Section<List<Conteiner>>{
     private static final long serialVersionUID = 1L;
 
+    @JsonDeserialize(as=ArrayList.class, contentAs = Conteiner.class)
     List<Conteiner> conteiners = new ArrayList<>();
 
     public ConteinerSection(){
