@@ -1,7 +1,9 @@
 package com.urise.webapp.model.section;
 
-import com.urise.webapp.model.section.Section;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class StringSection extends Section<String> {
     private static final long serialVersionUID = 1L;
 

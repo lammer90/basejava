@@ -1,5 +1,10 @@
 package com.urise.webapp.model.section;
 
+import com.urise.webapp.util.LocalDateMarshaller;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -7,11 +12,15 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Conteiner implements Serializable{
     private static final long serialVersionUID = 1L;
 
     private String homePage, name;
     private List<Period> periods;
+
+    public Conteiner() {
+    }
 
     public Conteiner(String homePage, String name, Period...periods) {
         this.homePage = homePage;
@@ -64,10 +73,17 @@ public class Conteiner implements Serializable{
         this.periods = periods;
     }
 
+    @XmlAccessorType(XmlAccessType.FIELD)
     public static class Period implements Serializable{
-        private LocalDate startDate, endDate;
+        @XmlJavaTypeAdapter(LocalDateMarshaller.class)
+        private LocalDate startDate;
+        @XmlJavaTypeAdapter(LocalDateMarshaller.class)
+        private LocalDate endDate;
         private String title;
         private String text;
+
+        public Period() {
+        }
 
         public Period(LocalDate startDate, LocalDate endDate, String title, String text) {
             this.startDate = startDate;

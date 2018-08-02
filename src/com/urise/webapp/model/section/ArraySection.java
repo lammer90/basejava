@@ -2,10 +2,13 @@ package com.urise.webapp.model.section;
 
 import com.urise.webapp.model.section.Section;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ArraySection extends Section<List<String>>{
     private static final long serialVersionUID = 1L;
 

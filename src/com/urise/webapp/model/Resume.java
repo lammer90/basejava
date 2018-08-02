@@ -3,12 +3,17 @@ package com.urise.webapp.model;
 import com.urise.webapp.model.section.Section;
 import com.urise.webapp.model.section.SectionType;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.*;
 
 /**
  * com.urise.webapp.model.com.urise.webapp.model.Resume class
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Resume implements Serializable{
     private static final long serialVersionUID = 1L;
 
@@ -18,30 +23,17 @@ public class Resume implements Serializable{
     private Map<Contacts, String> contacts = new EnumMap<>(Contacts.class);
     private Map<SectionType, Section> sections = new EnumMap<>(SectionType.class);
 
+    public Resume() {
+    }
+
     public Resume(String fullName, String uuid) {
         this.fullname = fullName;
         this.uuid = uuid;
-        //initializeFields();
     }
 
     public Resume(String fullName){
         this.fullname = fullName;
         this.uuid = UUID.randomUUID().toString();
-        //initializeFields();
-    }
-
-    private void initializeFields(){
-        for (Contacts contact : Contacts.values()){
-            contacts.put(contact, "");
-        }
-
-        for (SectionType sectionType : SectionType.values()){
-            try {
-                Section section = (Section) sectionType.getaClass().newInstance();
-                sections.put(sectionType, section);
-            }
-            catch (Exception e){}
-        }
     }
 
     @Override
@@ -73,12 +65,19 @@ public class Resume implements Serializable{
 
         Resume resume = (Resume) o;
 
-        return uuid != null ? uuid.equals(resume.uuid) : resume.uuid == null;
+        if (uuid != null ? !uuid.equals(resume.uuid) : resume.uuid != null) return false;
+        if (fullname != null ? !fullname.equals(resume.fullname) : resume.fullname != null) return false;
+        if (contacts != null ? !contacts.equals(resume.contacts) : resume.contacts != null) return false;
+        return sections != null ? sections.equals(resume.sections) : resume.sections == null;
     }
 
     @Override
     public int hashCode() {
-        return uuid != null ? uuid.hashCode() : 0;
+        int result = uuid != null ? uuid.hashCode() : 0;
+        result = 31 * result + (fullname != null ? fullname.hashCode() : 0);
+        result = 31 * result + (contacts != null ? contacts.hashCode() : 0);
+        result = 31 * result + (sections != null ? sections.hashCode() : 0);
+        return result;
     }
 
     public String getContact(Contacts contact) {

@@ -1,9 +1,12 @@
 package com.urise.webapp.model.section;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ConteinerSection extends Section<List<Conteiner>>{
     private static final long serialVersionUID = 1L;
 

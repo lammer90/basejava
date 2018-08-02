@@ -1,4 +1,4 @@
-package com.urise.webapp.model.util;
+package com.urise.webapp.util;
 
 import java.time.LocalDate;
 import java.time.Month;

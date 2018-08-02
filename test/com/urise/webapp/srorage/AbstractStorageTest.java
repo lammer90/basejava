@@ -5,19 +5,12 @@ import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.model.Contacts;
 import com.urise.webapp.model.Resume;
 import com.urise.webapp.model.section.*;
-import com.urise.webapp.model.util.DateUtil;
+import com.urise.webapp.util.DateUtil;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.InputStreamReader;
 import java.time.Month;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.*;
 
