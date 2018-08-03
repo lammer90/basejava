@@ -22,9 +22,7 @@ import java.util.List;
 public class Conteiner implements Serializable{
     private static final long serialVersionUID = 1L;
 
-    @JsonProperty("homePage")
     private String homePage;
-    @JsonProperty("name")
     private String name;
     @JsonDeserialize(as=ArrayList.class, contentAs = Period.class)
     @JsonProperty("periods")
@@ -72,6 +70,10 @@ public class Conteiner implements Serializable{
         return homePage;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public void setHomePage(String homePage) {
         this.homePage = homePage;
     }
@@ -88,21 +90,33 @@ public class Conteiner implements Serializable{
     @JsonAutoDetect
     public static class Period implements Serializable{
         @XmlJavaTypeAdapter(LocalDateMarshaller.class)
-        @JsonProperty("startDate")
         @JsonDeserialize(using = LocalDateDeserializer.class)
         @JsonSerialize(using = LocalDateSerializer.class)
         private LocalDate startDate;
         @XmlJavaTypeAdapter(LocalDateMarshaller.class)
-        @JsonProperty("endDate")
         @JsonDeserialize(using = LocalDateDeserializer.class)
         @JsonSerialize(using = LocalDateSerializer.class)
         private LocalDate endDate;
-        @JsonProperty("title")
         private String title;
-        @JsonProperty("text")
         private String text;
 
         public Period() {
+        }
+
+        public LocalDate getStartDate() {
+            return startDate;
+        }
+
+        public LocalDate getEndDate() {
+            return endDate;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public String getText() {
+            return text;
         }
 
         public Period(LocalDate startDate, LocalDate endDate, String title, String text) {
