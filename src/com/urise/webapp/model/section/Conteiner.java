@@ -3,7 +3,10 @@ package com.urise.webapp.model.section;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.urise.webapp.util.LocalDateDeserializer;
 import com.urise.webapp.util.LocalDateMarshaller;
+import com.urise.webapp.util.LocalDateSerializer;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -19,7 +22,10 @@ import java.util.List;
 public class Conteiner implements Serializable{
     private static final long serialVersionUID = 1L;
 
-    private String homePage, name;
+    @JsonProperty("homePage")
+    private String homePage;
+    @JsonProperty("name")
+    private String name;
     @JsonDeserialize(as=ArrayList.class, contentAs = Period.class)
     @JsonProperty("periods")
     private List<Period> periods;
@@ -83,9 +89,13 @@ public class Conteiner implements Serializable{
     public static class Period implements Serializable{
         @XmlJavaTypeAdapter(LocalDateMarshaller.class)
         @JsonProperty("startDate")
+        @JsonDeserialize(using = LocalDateDeserializer.class)
+        @JsonSerialize(using = LocalDateSerializer.class)
         private LocalDate startDate;
         @XmlJavaTypeAdapter(LocalDateMarshaller.class)
         @JsonProperty("endDate")
+        @JsonDeserialize(using = LocalDateDeserializer.class)
+        @JsonSerialize(using = LocalDateSerializer.class)
         private LocalDate endDate;
         @JsonProperty("title")
         private String title;

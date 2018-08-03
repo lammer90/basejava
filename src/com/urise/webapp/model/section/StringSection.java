@@ -1,5 +1,6 @@
 package com.urise.webapp.model.section;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -39,6 +40,7 @@ public class StringSection extends Section<String> {
         return text;
     }
 
+    @JsonIgnore
     public String getInformation() {
         return text;
     }

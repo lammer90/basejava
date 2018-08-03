@@ -1,5 +1,6 @@
 package com.urise.webapp.model.section;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
@@ -44,6 +45,7 @@ public class ConteinerSection extends Section<List<Conteiner>>{
         return conteiners != null ? conteiners.hashCode() : 0;
     }
 
+    @JsonIgnore
     public List<Conteiner> getInformation() {
         return conteiners;
     }

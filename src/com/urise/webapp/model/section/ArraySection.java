@@ -1,5 +1,6 @@
 package com.urise.webapp.model.section;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.urise.webapp.model.section.Section;
@@ -45,6 +46,7 @@ public class ArraySection extends Section<List<String>>{
         return strings.toString();
     }
 
+    @JsonIgnore
     public List<String> getInformation() {
         return strings;
     }
