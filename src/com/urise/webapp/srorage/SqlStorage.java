@@ -26,7 +26,7 @@ public class SqlStorage implements Storage{
     @Override
     public void clear() {
         try (Connection connection = connectionFactory.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement("DROP TABLE resume"))
+             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM resume"))
         {
             preparedStatement.execute();
         } catch (SQLException e) {
