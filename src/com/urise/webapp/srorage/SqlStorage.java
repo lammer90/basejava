@@ -100,7 +100,7 @@ public class SqlStorage implements Storage {
         if (!exRes.isResult()) {
             return 0;
         }
-        int i = 1;
+        return 0;
         //while (exRes.getResultSet().next()){
 
         //}
