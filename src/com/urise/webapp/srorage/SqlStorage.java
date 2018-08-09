@@ -8,6 +8,7 @@ import com.urise.webapp.srorage.sql.ConnectionFactory;
 import com.urise.webapp.srorage.sql.SqlHelper;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SqlStorage implements Storage {
@@ -95,7 +96,14 @@ public class SqlStorage implements Storage {
 
     @Override
     public int size() {
-        return 0;
+        ExecuteResult exRes = executeQueryPreparedStatement.execute(SqlHelper.getPreparedStatement(connectionFactory, "SELECT * FROM resume"));
+        if (!exRes.isResult()) {
+            return 0;
+        }
+        int i = 1;
+        //while (exRes.getResultSet().next()){
+
+        //}
     }
 
     private interface ExecutePreparedStatement {
