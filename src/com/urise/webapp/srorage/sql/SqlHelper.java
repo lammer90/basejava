@@ -6,18 +6,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class SqlHelper {
-    public static PreparedStatement getPreparedStatement(ConnectionFactory connectionFactory, String sql, String... params){
+    public static ExecuteResult getPreparedStatement(ConnectionFactory connectionFactory, String sql, ExecutePreparedStatement executePreparedStatement, String... params){
         try (Connection connection = connectionFactory.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql))
         {
-            for(int i = 1; i <= params.length; i++){
-                preparedStatement.setString(i, params[i]);
+            for(int i = 0; i < params.length; i++){
+                preparedStatement.setString(i+1, params[i]);
             }
-            return preparedStatement;
+            return executePreparedStatement.execute(preparedStatement);
         } catch (SQLException e) {
             throw new StorageException(e);
         }

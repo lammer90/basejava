@@ -19,9 +19,9 @@ public abstract class AbstractStorageTest {
 
     protected Storage storage;
 
-    protected static final String UUID_1 = "uuid1";
-    protected static final String UUID_2 = "uuid2";
-    protected static final String UUID_3 = "uuid3";
+    protected static final String UUID_1 = "uuid1                               ";
+    protected static final String UUID_2 = "uuid2                               ";
+    protected static final String UUID_3 = "uuid3                               ";
 
     protected static final Resume resume1;
     protected static final Resume resume2;
@@ -48,7 +48,7 @@ public abstract class AbstractStorageTest {
     public static Resume newResume(String str, String uuid){
         Resume resume = new Resume("Name " + str, uuid);
 
-        for (SectionType type : SectionType.values()){
+        /*for (SectionType type : SectionType.values()){
             if (type.getaClass() == StringSection.class) {
                 resume.addSectionn(type, new StringSection(str));
             }
@@ -68,7 +68,7 @@ public abstract class AbstractStorageTest {
         }
         for (Contacts contact : Contacts.values()){
             resume.addContact(contact,contact.getTitle() + " " + str);
-        }
+        }*/
         return resume;
     }
 
@@ -88,10 +88,10 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void save() throws Exception {
-        Resume r = newResume("Name 4", "uuid4");
+        Resume r = newResume("Name 4", "uuid4                               ");
         storage.save(r);
         Assert.assertEquals(4, storage.size());
-        Assert.assertEquals(storage.get("uuid4"), r);
+        Assert.assertEquals(storage.get("uuid4                               "), r);
     }
 
     @Test(expected = NotExistStorageException.class)

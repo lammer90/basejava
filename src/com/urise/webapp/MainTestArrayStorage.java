@@ -9,7 +9,7 @@ import java.io.File;
  * Test for com.urise.webapp.storage.com.urise.webapp.srorage.ArrayStorage
  */
 public class MainTestArrayStorage {
-    static final Storage ARRAY_STORAGE = new ArrayStorage();
+    static final Storage ARRAY_STORAGE = new SqlStorage("jdbc:postgresql://localhost:5432/resumes", "postgres", "1234lammer");
 
     public static void main(String[] args) {
         Resume r1 = new Resume("uuid1", "uuid1");
