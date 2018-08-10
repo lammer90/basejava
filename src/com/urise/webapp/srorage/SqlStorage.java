@@ -7,25 +7,41 @@ import com.urise.webapp.model.Contacts;
 import com.urise.webapp.model.Resume;
 import com.urise.webapp.srorage.sql.ConnectionFactory;
 import com.urise.webapp.srorage.sql.ExecutePreparedStatement;
+import com.urise.webapp.srorage.sql.GetResumeInterface;
 import com.urise.webapp.srorage.sql.SqlHelper;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class SqlStorage implements Storage {
     private final ConnectionFactory connectionFactory;
 
-    private GetResumeInterface getResumeInterface = this::getOnlyResume;
-
-    private GetResumeInterface getResumeInterfaceContacts = resultSet -> {
-        List<Resume> res = getOnlyResume(resultSet);
-
-        return res;
+    private GetResumeInterface getResumeInterface = resultSet -> {
+        Map<String,Resume> resMap = getOnlyResume(resultSet);
+        return new ArrayList<>(resMap.values());
     };
 
-    private ExecutePreparedStatement<Integer> executePreparedStatement = preparedStatement -> {
+    private GetResumeInterface getResumeInterfaceContacts = resultSet -> {
+        Map<String,Resume> resMap = getOnlyResume(resultSet);
+        try {
+            resultSet.beforeFirst();
+            while (resultSet.next()) {
+                Resume r = resMap.get(resultSet.getString("resume_uuid"));
+                r.addContact(Contacts.valueOf(resultSet.getString("type")), resultSet.getString("value"));
+                resultSet.getString("resume_uuid");
+                resultSet.getString("type");
+                resultSet.getString("value");
+            }
+        } catch (SQLException e) {
+            throw new StorageException(e);
+        }
+        return new ArrayList<>(resMap.values());
+    };
+
+    private ExecutePreparedStatement<Integer> executePreparedStatement = (preparedStatement, getResumeInterface) -> {
         try {
             return preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -33,10 +49,10 @@ public class SqlStorage implements Storage {
         }
     };
 
-    private ExecutePreparedStatement<List<Resume>> executeQueryPreparedStatement = preparedStatement -> {
+    private ExecutePreparedStatement<List<Resume>> executeQueryPreparedStatement = (preparedStatement, getResumeInterface) -> {
         try {
-            ResultSet resultSet = preparedStatement.executeQuery();
-            return getResumeInterface.getNewResume(resultSet);
+            ResultSet newResultSet = preparedStatement.executeQuery();
+            return getResumeInterface.getNewResume(newResultSet);
         } catch (SQLException e) {
             throw new StorageException(e);
         }
@@ -54,7 +70,7 @@ public class SqlStorage implements Storage {
 
     @Override
     public void clear() {
-        SqlHelper.getPreparedStatement(connectionFactory, "DELETE FROM resume", executePreparedStatement);
+        SqlHelper.getPreparedStatement(connectionFactory, "DELETE FROM resume", executePreparedStatement, getResumeInterface);
     }
 
 
@@ -90,7 +106,7 @@ public class SqlStorage implements Storage {
 
     @Override
     public void save(Resume r) {
-        List<Resume> resumes = SqlHelper.getPreparedStatement(connectionFactory, "SELECT * FROM resume r WHERE r.uuid=?", executeQueryPreparedStatement, r.getUuid());
+        List<Resume> resumes = SqlHelper.getPreparedStatement(connectionFactory, "SELECT * FROM resume r WHERE r.uuid=?", executeQueryPreparedStatement, getResumeInterface, r.getUuid());
         if (resumes.size() != 0) {
             throw new ExistStorageException(r.getUuid());
         }
@@ -114,56 +130,45 @@ public class SqlStorage implements Storage {
 
     @Override
     public Resume get(String uuid) {
-        List<Resume> resumes = SqlHelper.getTransactionPreparedStatement(connectionFactory, connection -> {
-            PreparedStatement preparedStatement = connection.prepareStatement("" +
-                    "    SELECT * FROM resume r " +
-                    " LEFT JOIN contact c " +
-                    "        ON r.uuid = c.resume_uuid " +
-                    "     WHERE r.uuid =? ");
-            preparedStatement.setString(1, uuid);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            return getResumeInterfaceContacts.getNewResume(resultSet);
-        });
-
+        String sqlQuery = "" +
+                "    SELECT * FROM resume r " +
+                " LEFT JOIN contact c " +
+                "        ON r.uuid = c.resume_uuid " +
+                "     WHERE r.uuid =? ";
+        List<Resume> resumes = SqlHelper.getPreparedStatement(connectionFactory, sqlQuery, executeQueryPreparedStatement, getResumeInterfaceContacts,uuid);
         if (resumes.size() == 0) {
             throw new NotExistStorageException(uuid);
         }
         return resumes.get(0);
-
-        /*List<Resume> resumes = SqlHelper.getPreparedStatement(connectionFactory, "SELECT * FROM resume r WHERE r.uuid=?", executeQueryPreparedStatement, uuid);
-        if (resumes.size() == 0) {
-            throw new NotExistStorageException(uuid);
-        }
-        return resumes.get(0);*/
     }
 
     @Override
     public void delete(String uuid) {
-        if (SqlHelper.getPreparedStatement(connectionFactory, "DELETE FROM resume r WHERE r.uuid=?", executePreparedStatement, uuid) == 0) {
+        if (SqlHelper.getPreparedStatement(connectionFactory, "DELETE FROM resume r WHERE r.uuid=?", executePreparedStatement, getResumeInterface, uuid) == 0) {
             throw new ExistStorageException(uuid);
         }
     }
 
     @Override
     public List<Resume> getAllSorted() {
-        return SqlHelper.getPreparedStatement(connectionFactory, "SELECT * FROM resume", executeQueryPreparedStatement);
+        String sqlQuery = "" +
+                "    SELECT * FROM resume r " +
+                " LEFT JOIN contact c " +
+                "        ON r.uuid = c.resume_uuid ";
+        return SqlHelper.getPreparedStatement(connectionFactory, sqlQuery, executeQueryPreparedStatement, getResumeInterfaceContacts);
     }
 
     @Override
     public int size() {
-        List<Resume> resumes = SqlHelper.getPreparedStatement(connectionFactory, "SELECT * FROM resume", executeQueryPreparedStatement);
+        List<Resume> resumes = SqlHelper.getPreparedStatement(connectionFactory, "SELECT * FROM resume", executeQueryPreparedStatement, getResumeInterface);
         return resumes.size();
     }
 
-    private interface GetResumeInterface {
-        List<Resume> getNewResume(ResultSet resultSet);
-    }
-
-    private List<Resume> getOnlyResume(ResultSet resultSet){
-        List<Resume> res = new ArrayList<>();
+    private Map<String,Resume> getOnlyResume(ResultSet resultSet){
+        Map<String,Resume> res = new HashMap<>();
         try {
             while (resultSet.next()) {
-                res.add(new Resume(resultSet.getString("full_name"), resultSet.getString("uuid")));
+                res.put(resultSet.getString("uuid"), new Resume(resultSet.getString("full_name"), resultSet.getString("uuid")));
             }
         } catch (SQLException e) {
             throw new StorageException(e);

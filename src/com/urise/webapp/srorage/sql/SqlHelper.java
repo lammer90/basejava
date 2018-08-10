@@ -8,13 +8,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class SqlHelper {
-    public static <T> T getPreparedStatement(ConnectionFactory connectionFactory, String sql, ExecutePreparedStatement<T> executePreparedStatement, String... params) {
+    public static <T> T getPreparedStatement(ConnectionFactory connectionFactory, String sql, ExecutePreparedStatement<T> executePreparedStatement, GetResumeInterface getResumeInterface, String... params) {
         try (Connection connection = connectionFactory.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(sql,
+                     ResultSet.TYPE_SCROLL_SENSITIVE,
+                     ResultSet.CONCUR_UPDATABLE)) {
             for (int i = 0; i < params.length; i++) {
                 preparedStatement.setString(i + 1, params[i]);
             }
-            return executePreparedStatement.execute(preparedStatement);
+            return executePreparedStatement.execute(preparedStatement, getResumeInterface);
         } catch (SQLException e) {
             throw new StorageException(e);
         }

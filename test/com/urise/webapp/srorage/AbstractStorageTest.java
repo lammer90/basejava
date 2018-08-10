@@ -19,9 +19,9 @@ public abstract class AbstractStorageTest {
 
     protected Storage storage;
 
-    protected static final String UUID_1 = "uuid1                               ";
-    protected static final String UUID_2 = "uuid2                               ";
-    protected static final String UUID_3 = "uuid3                               ";
+    protected static final String UUID_1 = "uuid1_______________________________";
+    protected static final String UUID_2 = "uuid2_______________________________";
+    protected static final String UUID_3 = "uuid3_______________________________";
 
     protected static final Resume resume1;
     protected static final Resume resume2;
@@ -65,10 +65,10 @@ public abstract class AbstractStorageTest {
                                 new Conteiner.Period(DateUtil.of(2016, Month.AUGUST), DateUtil.of(2017, Month.AUGUST), str + "*title5",str + "*text8")
                 )));
             }
-        }
+        }*/
         for (Contacts contact : Contacts.values()){
             resume.addContact(contact,contact.getTitle() + " " + str);
-        }*/
+        }
         return resume;
     }
 
@@ -88,10 +88,10 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void save() throws Exception {
-        Resume r = newResume("Name 4", "uuid4                               ");
+        Resume r = newResume("Name 4", "uuid4_______________________________");
         storage.save(r);
         Assert.assertEquals(4, storage.size());
-        Assert.assertEquals(storage.get("uuid4                               "), r);
+        Assert.assertEquals(storage.get("uuid4_______________________________"), r);
     }
 
     @Test(expected = NotExistStorageException.class)
