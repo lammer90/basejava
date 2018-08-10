@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class SqlHelper {
-    public static ExecuteResult getPreparedStatement(ConnectionFactory connectionFactory, String sql, ExecutePreparedStatement executePreparedStatement, String... params){
+    public static <T> T getPreparedStatement(ConnectionFactory connectionFactory, String sql, ExecutePreparedStatement<T> executePreparedStatement, String... params){
         try (Connection connection = connectionFactory.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql))
         {
