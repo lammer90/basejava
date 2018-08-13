@@ -73,7 +73,6 @@ public class SqlStorage implements Storage {
         SqlHelper.getPreparedStatement(connectionFactory, "DELETE FROM resume", executePreparedStatement, getResumeInterface);
     }
 
-
     @Override
     public void update(Resume r) {
         int finalResult = SqlHelper.getTransactionPreparedStatement(connectionFactory, connection -> {
@@ -98,10 +97,6 @@ public class SqlStorage implements Storage {
         if (finalResult == 0) {
             throw new NotExistStorageException(r.getUuid());
         }
-
-        /*if (SqlHelper.getPreparedStatement(connectionFactory, "UPDATE resume SET full_name =? WHERE uuid =?", executePreparedStatement, r.getFullname(), r.getUuid()) == 0) {
-            throw new NotExistStorageException(r.getUuid());
-        }*/
     }
 
     @Override
