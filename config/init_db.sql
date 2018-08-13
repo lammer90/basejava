@@ -1,30 +1,10 @@
-create table resume
-(
-	uuid char(36) not null
-		constraint resume_pkey
-			primary key,
-	full_name text
-)
-;
-
-alter table resume owner to postgres
-;
-
-
-create table contact
-(
-	id serial not null
-		constraint contact_pkey
-			primary key,
-	type text not null,
-	value text not null,
-	resume_uuid char(36) not null
-		constraint contact_resume_uuid_fk
-			references resume
-				on delete cascade
-)
-;
-
-alter table contact owner to postgres
-;
+select r.uuid, r.full_name,
+       c.type, c.value, c.resume_uuid,
+       s.type as typeS, s.value as valueS, s.resume_uuid as resume_uuidS
+from resume r
+left join contact c
+    on r.uuid = c.resume_uuid
+left join section s
+    on r.uuid = s.resume_uuid
+where r.uuid = 'uuid1_______________________________'
 
