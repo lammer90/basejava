@@ -83,15 +83,7 @@ public class SqlStorage implements Storage {
                 ps.executeBatch();
 
                 PreparedStatement psSection = connection.prepareStatement("UPDATE section SET value =? WHERE resume_uuid =? AND type =?");
-                for (Map.Entry<SectionType, Section> e : r.getSections().entrySet()) {
-                    if(e.getValue() instanceof StringSection){
-                        addParametrs(psSection, ((StringSection) e.getValue()).getInformation(), r.getUuid(), e.getKey().name());
-                    }
-                    else if(e.getValue() instanceof ArraySection){
-                        addParametrs(psSection, String.join ( System.lineSeparator(), ((ArraySection) e.getValue()).getInformation()), r.getUuid(), e.getKey().name());
-                    }
-                    psSection.addBatch();
-                }
+                addSection(r, psSection);
                 psSection.executeBatch();
             }
             return result;
@@ -120,7 +112,7 @@ public class SqlStorage implements Storage {
             }
             ps.executeBatch();
 
-            PreparedStatement psSection = connection.prepareStatement("INSERT INTO section (resume_uuid, type, value) VALUES (?,?,?)");
+            PreparedStatement psSection = connection.prepareStatement("INSERT INTO section (value, resume_uuid, type) VALUES (?,?,?)");
             addSection(r, psSection);
             psSection.executeBatch();
             return true;
@@ -130,10 +122,10 @@ public class SqlStorage implements Storage {
     private void addSection(Resume r, PreparedStatement ps) throws SQLException {
         for (Map.Entry<SectionType, Section> e : r.getSections().entrySet()) {
             if(e.getValue() instanceof StringSection){
-                addParametrs(ps, r.getUuid(), e.getKey().name(), ((StringSection) e.getValue()).getInformation());
+                addParametrs(ps, ((StringSection) e.getValue()).getInformation(), r.getUuid(), e.getKey().name());
             }
             else if(e.getValue() instanceof ArraySection){
-                addParametrs(ps, r.getUuid(), e.getKey().name(), String.join ( System.lineSeparator(), ((ArraySection) e.getValue()).getInformation()));
+                addParametrs(ps, String.join ( System.lineSeparator(), ((ArraySection) e.getValue()).getInformation()), r.getUuid(), e.getKey().name());
             }
             ps.addBatch();
         }
