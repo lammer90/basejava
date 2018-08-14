@@ -52,15 +52,20 @@ public class ResumeServlet extends HttpServlet {
     }
 
     private void getAllResume(HttpServletResponse response, List<Resume> resumes) throws IOException {
-       /* Path path = Paths.get("C:\\git_tutorial\\work\\hello\\basejava\\storage\\OneResume.html");
-
+        Path path = Paths.get("C:\\git_tutorial\\work\\hello\\basejava\\storage\\AllResume.html");
         String s = new String(Files.readAllBytes(path));
+        StringBuilder builder = new StringBuilder();
 
+        for (Resume r : resumes){
+            builder.append("<tr>");
+            builder.append("<td bgcolor=\"#b2ff80\"><center>").append(r.getFullname()).append("</center></td>");
+            builder.append("<tr>");
+        }
 
+        s = s.replaceAll("&Strings", builder.toString());
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=UTF-8");
-
-        response.getWriter().write(s);*/
+        response.getWriter().write(s);
     }
 
     private void getResume(HttpServletResponse response, Resume resume) throws IOException {
