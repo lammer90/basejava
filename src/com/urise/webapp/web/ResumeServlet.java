@@ -1,16 +1,14 @@
 package com.urise.webapp.web;
 
+import com.urise.webapp.Config;
 import com.urise.webapp.exception.NotExistStorageException;
-import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Contacts;
 import com.urise.webapp.model.Resume;
 import com.urise.webapp.model.section.ArraySection;
 import com.urise.webapp.model.section.Section;
 import com.urise.webapp.model.section.SectionType;
 import com.urise.webapp.model.section.StringSection;
-import com.urise.webapp.srorage.SqlStorage;
 import com.urise.webapp.srorage.Storage;
-import org.postgresql.Driver;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -20,8 +18,6 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -32,12 +28,7 @@ public class ResumeServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            DriverManager.registerDriver(new Driver());
-        } catch (SQLException e) {
-            throw new StorageException(e);
-        }
-        Storage storage = new SqlStorage("jdbc:postgresql://localhost:5432/resumes", "postgres", "1234lammer");
+        Storage storage = Config.getInstance().initStorage();
         String str = request.getParameter("uuid");
         if (str != null) {
             try {
