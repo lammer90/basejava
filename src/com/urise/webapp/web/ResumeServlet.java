@@ -22,13 +22,19 @@ import java.util.List;
 import java.util.Map;
 
 public class ResumeServlet extends HttpServlet {
+    private Storage storage;
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        storage = Config.getInstance().initStorage();
+    }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Storage storage = Config.getInstance().initStorage();
         String str = request.getParameter("uuid");
         if (str != null) {
             try {
@@ -49,7 +55,7 @@ public class ResumeServlet extends HttpServlet {
 
         for (Resume r : resumes){
             builder.append("<tr>");
-            builder.append("<td bgcolor=\"#b2ff80\"><center>").append(r.getFullname()).append("</center></td>");
+            builder.append("<td bgcolor=\"#b2ff80\"><center>").append("<a href=resume?uuid=").append(r.getUuid()).append(">").append(r.getFullname()).append("</a></center></td>");
             builder.append("<tr>");
         }
 
