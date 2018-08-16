@@ -90,7 +90,7 @@ public class ResumeServlet extends HttpServlet {
                 builder2.append("<td><center>").append(((StringSection) entry.getValue()).getInformation()).append("</center></td>");
                 builder2.append("</tr>");
                 builder2.append("</table>");
-            } else {
+            } else if  (entry.getValue() instanceof ArraySection){
                 builder2.append("<br><br><br><br>");
                 builder2.append("<table>");
                 builder2.append("<tr>");
