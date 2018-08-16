@@ -55,7 +55,7 @@ public abstract class AbstractStorageTest {
             else if (type.getaClass() == ArraySection.class) {
                 resume.addSectionn(type, new ArraySection(str + "*1", str + "*2", str + "*3"));
             }
-           /* else {
+            else {
                 resume.addSectionn(type, new ConteinerSection(
                         new Conteiner("http// " + str, str + "*name",
                                 new Conteiner.Period(DateUtil.of(2015, Month.APRIL), DateUtil.of(2016, Month.APRIL), str + "*title1",str + "*text1"),
@@ -64,7 +64,7 @@ public abstract class AbstractStorageTest {
                                 new Conteiner.Period(DateUtil.of(2015, Month.AUGUST), DateUtil.of(2016, Month.AUGUST), str + "*title4",str + "*text7"),
                                 new Conteiner.Period(DateUtil.of(2016, Month.AUGUST), DateUtil.of(2017, Month.AUGUST), str + "*title5",str + "*text8")
                 )));
-            }*/
+            }
         }
         for (Contacts contact : Contacts.values()){
             resume.addContact(contact,contact.getTitle() + " " + str);
