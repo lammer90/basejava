@@ -44,7 +44,8 @@ public class ResumeServlet extends HttpServlet {
                 getAllResume(response, storage.getAllSorted());
             }
         } else {
-            getAllResume(response, storage.getAllSorted());
+            request.setAttribute("resumes", storage.getAllSorted());
+            request.getRequestDispatcher("/WEB-INF/jsp/allResume.jsp").forward(request, response);
         }
     }
 
