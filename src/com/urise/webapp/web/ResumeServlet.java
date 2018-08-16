@@ -31,82 +31,59 @@ public class ResumeServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        request.setCharacterEncoding("UTF-8");
+        if (!request.getParameter("uuid").equals("")) {
+            Resume resume = new Resume(request.getParameter("fullname"), request.getParameter("uuid"));
+            for (Contacts contact : Contacts.values()) {
+                resume.addContact(contact, request.getParameter(contact.name()));
+            }
+            storage.update(resume);
+        }
+        else{
+            Resume resume = new Resume(request.getParameter("fullname"));
+            for (Contacts contact : Contacts.values()) {
+                resume.addContact(contact, request.getParameter(contact.name()));
+            }
+            storage.save(resume);
+        }
+        response.sendRedirect("resume");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String str = request.getParameter("uuid");
-        if (str != null) {
+        String uuid = request.getParameter("uuid");
+        String action = request.getParameter("action");
+        if (action != null) {
             try {
-                Resume resume = storage.get(str);
-                getResume(response, resume);
+                switch (action){
+                    case "delete": {
+                        storage.delete(uuid);
+                        response.sendRedirect("resume");
+                        break;
+                    }
+                    case "edit":{
+                        request.setAttribute("resume", storage.get(uuid));
+                        request.getRequestDispatcher("/WEB-INF/jsp/editResume.jsp").forward(request, response);
+                        break;
+                    }
+                    case "view":{
+                        request.setAttribute("resume", storage.get(uuid));
+                        request.getRequestDispatcher("/WEB-INF/jsp/viewResume.jsp").forward(request, response);
+                        break;
+                    }
+                    case "add":{
+                        request.setAttribute("resume", new Resume());
+                        request.getRequestDispatcher("/WEB-INF/jsp/editResume.jsp").forward(request, response);
+                        break;
+                    }
+                }
+                /*Resume resume = storage.get(uuid);
+                getResume(response, resume);*/
             } catch (NotExistStorageException e) {
-                getAllResume(response, storage.getAllSorted());
+               // getAllResume(response, storage.getAllSorted());
             }
         } else {
             request.setAttribute("resumes", storage.getAllSorted());
             request.getRequestDispatcher("/WEB-INF/jsp/allResume.jsp").forward(request, response);
         }
-    }
-
-    private void getAllResume(HttpServletResponse response, List<Resume> resumes) throws IOException {
-        Path path = Paths.get("C:\\git_tutorial\\work\\hello\\basejava\\storage\\AllResume.html");
-        String s = new String(Files.readAllBytes(path));
-        StringBuilder builder = new StringBuilder();
-
-        for (Resume r : resumes){
-            builder.append("<tr>");
-            builder.append("<td bgcolor=\"#b2ff80\"><center>").append("<a href=resume?uuid=").append(r.getUuid()).append(">").append(r.getFullname()).append("</a></center></td>");
-            builder.append("<tr>");
-        }
-
-        s = s.replaceAll("&Strings", builder.toString());
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html; charset=UTF-8");
-        response.getWriter().write(s);
-    }
-
-    private void getResume(HttpServletResponse response, Resume resume) throws IOException {
-        Path path = Paths.get("C:\\git_tutorial\\work\\hello\\basejava\\storage\\OneResume.html");
-        String s = new String(Files.readAllBytes(path));
-        s = s.replaceAll("&Title", resume.getFullname());
-        s = s.replaceAll("&Contacts", "Контакты:");
-        StringBuilder builder = new StringBuilder();
-        for (Map.Entry<Contacts, String> entry : resume.getContacts().entrySet()) {
-            builder.append("<tr>");
-            builder.append("<td><center>").append(entry.getKey().getTitle()).append(":").append("</center></td>");
-            builder.append("<td><center>").append(entry.getValue()).append("</center></td>");
-            builder.append("<tr>");
-        }
-        s = s.replaceAll("&ContStrings", builder.toString());
-        StringBuilder builder2 = new StringBuilder();
-        for (Map.Entry<SectionType, Section> entry : resume.getSections().entrySet()) {
-            if (entry.getValue() instanceof StringSection) {
-                builder2.append("<br><br><br><br>");
-                builder2.append("<table>");
-                builder2.append("<tr>");
-                builder2.append("<td align=\"left\"><center>").append(entry.getKey().getTitle()).append(":").append("</center></td>");
-                builder2.append("</tr>");
-                builder2.append("<tr>");
-                builder2.append("<td><center>").append(((StringSection) entry.getValue()).getInformation()).append("</center></td>");
-                builder2.append("</tr>");
-                builder2.append("</table>");
-            } else if  (entry.getValue() instanceof ArraySection){
-                builder2.append("<br><br><br><br>");
-                builder2.append("<table>");
-                builder2.append("<tr>");
-                builder2.append("<td align=\"left\"><center>").append(entry.getKey().getTitle()).append(":").append("</center></td>");
-                builder2.append("</tr>");
-                builder2.append("<tr>");
-                builder2.append("<td><center>").append(String.join ( System.lineSeparator(), ((ArraySection) entry.getValue()).getInformation())).append("</center></td>");
-                builder2.append("</tr>");
-                builder2.append("</table>");
-            }
-
-        }
-        s = s.replaceAll("&Sections", builder2.toString());
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html; charset=UTF-8");
-        response.getWriter().write(s);
     }
 }

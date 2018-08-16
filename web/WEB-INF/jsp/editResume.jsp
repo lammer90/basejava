@@ -1,0 +1,44 @@
+<jsp:useBean id="resume" scope="request" type="com.urise.webapp.model.Resume"/>
+<%@ page import="com.urise.webapp.model.Contacts" %>
+<%--
+  Created by IntelliJ IDEA.
+  User: plotnikov
+  Date: 16.08.2018
+  Time: 14:29
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<html>
+<head>
+    <link rel="stylesheet" href="css/style.css">
+    <title>EditResume</title>
+</head>
+<body>
+<section>
+    <form method="post" action="resume">
+        <h2>
+            <dl>
+                <dt><b>Имя</b></dt>
+                <dd><input name=fullname type="text" size="40" value="${resume.fullname}"></dd>
+            </dl>
+        </h2>
+        <dd><input name=uuid type="hidden" size="40" value="${resume.uuid}"></dd>
+        <hr>
+        <br><br>
+        <section>
+            <h3>Контакты</h3>
+            <br>
+            <c:forEach var="element" items="${Contacts.values()}">
+                <dl>
+                    <dt><b>${element.title}</b></dt>
+                    <dd><input name=${element.name()} type="text" size="40" value="${resume.getContact(element)}"></dd>
+                </dl>
+            </c:forEach>
+        </section>
+        <button type="submit">Сохранить</button>
+        <input type="button" onclick="history.back();" value="Назад"/>
+    </form>
+</section>
+</body>
+</html>

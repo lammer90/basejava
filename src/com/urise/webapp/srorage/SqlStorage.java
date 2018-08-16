@@ -123,12 +123,6 @@ public class SqlStorage implements Storage {
 
     private void addSection(Resume r, PreparedStatement ps) throws SQLException {
         for (Map.Entry<SectionType, Section> e : r.getSections().entrySet()) {
-            /*if(e.getValue() instanceof StringSection){
-                addParametrs(ps, ((StringSection) e.getValue()).getInformation(), r.getUuid(), e.getKey().name());
-            }
-            else if(e.getValue() instanceof ArraySection){
-                addParametrs(ps, String.join ( System.lineSeparator(), ((ArraySection) e.getValue()).getInformation()), r.getUuid(), e.getKey().name());
-            }*/
             try {
                 addParametrs(ps, JSONConverter.write(e.getValue()), r.getUuid(), e.getKey().name());
             } catch (IOException e1) {
@@ -229,7 +223,7 @@ public class SqlStorage implements Storage {
             while (resultSet.next()) {
                 String key = resultSet.getString("resume_uuidS");
 
-                if (!res.get(key).getSections().containsKey(SectionType.valueOf(resultSet.getString("typeS")))){
+                if (key!=null && !res.get(key).getSections().containsKey(SectionType.valueOf(resultSet.getString("typeS")))){
                     try {
                         Class tClass = SectionType.valueOf(resultSet.getString("typeS")).getaClass();
                         res.get(key).addSectionn(SectionType.valueOf(resultSet.getString("typeS")), JSONConverter.read(resultSet.getString("valueS"), Section.class));
@@ -237,15 +231,6 @@ public class SqlStorage implements Storage {
                         throw new StorageException(e);
                     }
                 }
-
-                /*if (SectionType.valueOf(resultSet.getString("typeS")).getaClass() == StringSection.class &&
-                        !res.get(key).getSections().containsKey(SectionType.valueOf(resultSet.getString("typeS")))) {
-                    res.get(key).addSectionn(SectionType.valueOf(resultSet.getString("typeS")), new StringSection(resultSet.getString("valueS")));
-                }
-                else if (SectionType.valueOf(resultSet.getString("typeS")).getaClass() == ArraySection.class &&
-                        !res.get(key).getSections().containsKey(SectionType.valueOf(resultSet.getString("typeS")))){
-                    res.get(key).addSectionn(SectionType.valueOf(resultSet.getString("typeS")), new ArraySection(resultSet.getString("valueS").split(System.lineSeparator())));
-                }*/
             }
         } catch (SQLException e) {
             throw new StorageException(e);

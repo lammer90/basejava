@@ -11,7 +11,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>Title</title>
+    <link rel="stylesheet" href="css/style.css">
+    <title>AllResume</title>
 </head>
 <body>
 <table border="1" cellpadding="8" cellspacing="0">
@@ -31,7 +32,7 @@
         <jsp:useBean id="element" type="com.urise.webapp.model.Resume"/>
         <tr>
             <td width="25%">
-                <a href=resume?uuid=${element.uuid}>
+                <a href=resume?uuid=${element.uuid}&action=view>
                     ${element.fullname}
                 </a>
             </td>
@@ -39,13 +40,21 @@
                 ${element.getContact(Contacts.MAIL)}
             </td>
             <td width="25%">
-                edit
+                <a href=resume?uuid=${element.uuid}&action=edit>
+                    edit
+                </a>
             </td>
             <td width="25%">
-                delete
+                <a href=resume?uuid=${element.uuid}&action=delete>
+                    delete
+                </a>
             </td>
         </tr>
     </c:forEach>
 </table>
+<br><br>
+<a href=resume?&action=add>
+    Добавить
+</a>
 </body>
 </html>
