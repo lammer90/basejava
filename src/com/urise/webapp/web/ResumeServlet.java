@@ -96,8 +96,6 @@ public class ResumeServlet extends HttpServlet {
                         break;
                     }
                 }
-                /*Resume resume = storage.get(uuid);
-                getResume(response, resume);*/
             } catch (NotExistStorageException e) {
                // getAllResume(response, storage.getAllSorted());
             }
