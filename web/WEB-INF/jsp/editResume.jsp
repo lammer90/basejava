@@ -1,5 +1,6 @@
 <jsp:useBean id="resume" scope="request" type="com.urise.webapp.model.Resume"/>
 <%@ page import="com.urise.webapp.model.Contacts" %>
+<%@ page import="com.urise.webapp.model.section.SectionType" %>
 <%--
   Created by IntelliJ IDEA.
   User: plotnikov
@@ -25,7 +26,7 @@
         </h2>
         <dd><input name=uuid type="hidden" size="40" value="${resume.uuid}"></dd>
         <hr>
-        <br><br>
+        <br>
         <section>
             <h3>Контакты</h3>
             <br>
@@ -33,6 +34,19 @@
                 <dl>
                     <dt><b>${element.title}</b></dt>
                     <dd><input name=${element.name()} type="text" size="40" value="${resume.getContact(element)}"></dd>
+                </dl>
+            </c:forEach>
+        </section>
+        <br>
+        <section>
+            <h3>Информация</h3>
+            <br>
+            <c:forEach var="elementSec" items="${SectionType.values()}">
+                <dl>
+                    <dt><b>${elementSec.title}</b></dt>
+                    <br>
+                    <dd><textarea name="${elementSec.name()}" cols="160"
+                                  rows="5">${resume.getSection(elementSec)}</textarea></dd>
                 </dl>
             </c:forEach>
         </section>

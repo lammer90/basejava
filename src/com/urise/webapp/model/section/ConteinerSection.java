@@ -3,9 +3,12 @@ package com.urise.webapp.model.section;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.urise.webapp.util.JSONConverter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,7 +30,16 @@ public class ConteinerSection extends Section<List<Conteiner>>{
 
     @Override
     public String toString() {
-        return conteiners.toString();
+        try {
+            String result = "";
+            for (Conteiner con : conteiners) {
+                result = result + JSONConverter.write(con) + System.lineSeparator();
+            }
+            return result;
+        }
+        catch (IOException e){
+            return "";
+        }
     }
 
     @Override

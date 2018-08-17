@@ -4,22 +4,15 @@ import com.urise.webapp.Config;
 import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.model.Contacts;
 import com.urise.webapp.model.Resume;
-import com.urise.webapp.model.section.ArraySection;
-import com.urise.webapp.model.section.Section;
-import com.urise.webapp.model.section.SectionType;
-import com.urise.webapp.model.section.StringSection;
+import com.urise.webapp.model.section.*;
 import com.urise.webapp.srorage.Storage;
+import com.urise.webapp.util.JSONConverter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.Map;
 
 public class ResumeServlet extends HttpServlet {
     private Storage storage;
@@ -37,6 +30,9 @@ public class ResumeServlet extends HttpServlet {
             for (Contacts contact : Contacts.values()) {
                 resume.addContact(contact, request.getParameter(contact.name()));
             }
+            for (SectionType sectionType : SectionType.values()) {
+                addSectionn(sectionType, resume, request.getParameter(sectionType.name()));
+            }
             storage.update(resume);
         }
         else{
@@ -44,9 +40,33 @@ public class ResumeServlet extends HttpServlet {
             for (Contacts contact : Contacts.values()) {
                 resume.addContact(contact, request.getParameter(contact.name()));
             }
+            for (SectionType sectionType : SectionType.values()) {
+                addSectionn(sectionType, resume, request.getParameter(sectionType.name()));
+            }
             storage.save(resume);
         }
         response.sendRedirect("resume");
+    }
+
+    private void addSectionn(SectionType sectionType, Resume resume, String parameter) {
+        if (sectionType.getaClass() == StringSection.class){
+            resume.addSectionn(sectionType, new StringSection(parameter));
+        }
+        else if (sectionType.getaClass() == ArraySection.class){
+            resume.addSectionn(sectionType, new ArraySection(parameter.split(System.lineSeparator())));
+        }
+        else {
+            String[] arr = parameter.split(System.lineSeparator());
+            Conteiner[] con = new Conteiner[arr.length];
+            for (int i = 0; i < arr.length; i++){
+                try {
+                    con[i] = JSONConverter.read(arr[i], Conteiner.class);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            resume.addSectionn(sectionType, new ConteinerSection(con));
+        }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

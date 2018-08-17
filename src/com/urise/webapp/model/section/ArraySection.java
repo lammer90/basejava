@@ -12,10 +12,10 @@ import java.util.Arrays;
 import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ArraySection extends Section<List<String>>{
+public class ArraySection extends Section<List<String>> {
     private static final long serialVersionUID = 1L;
 
-    @JsonDeserialize(as=ArrayList.class, contentAs = String.class)
+    @JsonDeserialize(as = ArrayList.class, contentAs = String.class)
     @JsonProperty("strings")
     private List<String> strings = new ArrayList<>();
 
@@ -43,7 +43,11 @@ public class ArraySection extends Section<List<String>>{
 
     @Override
     public String toString() {
-        return strings.toString();
+        String result = "";
+        for (String str : strings) {
+            result = result + str + System.lineSeparator();
+        }
+        return result;
     }
 
     @JsonIgnore
